@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-
+import { API } from "aws-amplify"
 export default function Jobs() {
     const [jobStatus, setJobStatus] = useState("COMPLETED")
     const [jobsData, setJobsData] = useState(null)
@@ -11,11 +11,16 @@ export default function Jobs() {
             }
             console.log("Fetch Jobs Called")
             console.log({ jobStatus })
-            console.log(`${process.env.REACT_APP_API_ENDPOINT}/jobs`)
-            console.log({postData})
-            let res = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/jobs`, postData)
-
-            setJobsData(res.data.SentimentDetectionJobPropertiesList)
+            // console.log(`${process.env.REACT_APP_API_ENDPOINT}/jobs`)
+            console.log({ postData })
+            API.post('scraperapi', '/jobs', {
+                body: postData
+            }).then((res) => {
+                console.log("Response: ", res)
+                setJobsData(res.SentimentDetectionJobPropertiesList)
+            }).catch((error) => {
+                console.log(error.response)
+            })
         } catch (error) {
             console.log("Error in fetchJobs: ", error)
         }

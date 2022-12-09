@@ -1,9 +1,13 @@
-import { useState, useEffect } from "react";
 import View from './view'
-export default function Home (){
+import { Amplify } from 'aws-amplify'
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import '@aws-amplify/ui-react/styles.css'
+function Home (){
     return (
         <>
             <View />
         </>
     )
 }
+
+export default withAuthenticator(Home)

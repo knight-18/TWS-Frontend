@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState } from "react"
-
+import { API } from "aws-amplify"
 export default function Scheduler() {
     const [scheduleValue, setScheduleValue] = useState(null)
     const [scheduleUnit, setScheduleUnit] = useState("minutes")
@@ -12,7 +12,14 @@ export default function Scheduler() {
                 searchText: searchText
             }
             console.log({postData})
-            let response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/task/start`, postData)
+            // let response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/task/start`, postData)
+            API.post('scraperapi', '/start', {
+                body: postData
+            }).then((res) => {
+                console.log("Response: ", res)
+            }).catch((error) => {
+                console.log("Error in making API Call to runScraper", error)
+            })
         } catch (error) {
             console.log("Error in making API Call to runScraper", error)
         }
@@ -26,7 +33,14 @@ export default function Scheduler() {
             console.log({postData})
             console.log({scheduleValue})
             console.log({scheduleUnit})
-            let response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/task/schedule`, postData)
+            // let response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/task/schedule`, postData)
+            API.post('scraperapi', '/schedule', {
+                body: postData
+            }).then((res) => {
+                console.log("Response: ", res)
+            }).catch((error) => {
+                console.log("Error in making API Call to runScraper", error)
+            })
         } catch (error) {
             console.log("Error in making API Call to scheduleScraper", error)
         }
