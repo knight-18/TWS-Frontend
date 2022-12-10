@@ -11,7 +11,6 @@ export default function Jobs() {
             }
             console.log("Fetch Jobs Called")
             console.log({ jobStatus })
-            // console.log(`${process.env.REACT_APP_API_ENDPOINT}/jobs`)
             console.log({ postData })
             API.post('scraperapi', '/jobs', {
                 body: postData

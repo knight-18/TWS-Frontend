@@ -5,14 +5,15 @@ export default function Scheduler() {
     const [scheduleValue, setScheduleValue] = useState(null)
     const [scheduleUnit, setScheduleUnit] = useState("minutes")
     const [searchText, setSearchText] = useState("")
+    const [tweetLimit, setTweetLimit] = useState(10)
     const runScraper = async () => {
         try {
             console.log("Run Scraper Called")
             let postData = {
-                searchText: searchText
+                searchText: searchText,
+                tweetLimit: tweetLimit
             }
-            console.log({postData})
-            // let response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/task/start`, postData)
+            console.log({ postData })
             API.post('scraperapi', '/start', {
                 body: postData
             }).then((res) => {
@@ -28,12 +29,13 @@ export default function Scheduler() {
         try {
             console.log("Schedule Scraper Called")
             let postData = {
-                searchText: searchText
+                searchText: searchText,
+                tweetLimit: tweetLimit,
+                scheduleValue: scheduleValue,
+                scheduleUnit: scheduleUnit
             }
-            console.log({postData})
-            console.log({scheduleValue})
-            console.log({scheduleUnit})
-            // let response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/task/schedule`, postData)
+            console.log({ postData })
+
             API.post('scraperapi', '/schedule', {
                 body: postData
             }).then((res) => {
@@ -47,27 +49,37 @@ export default function Scheduler() {
     }
     return (
         <>
-            <h2>Start Scraper Job</h2>
-            <input type="text" placeholder="Enter Search Phrase" onChange={(e)=>{
+
+            <input type="text" placeholder="Enter Search Phrase" onChange={(e) => {
                 setSearchText(e.target.value)
-            }}/>
-            <button onClick={runScraper}>Run Scraper Job</button>
-            <br />
-            <h2>Schedule Scraper Job</h2>
-            <input type='number' placeholder="X" onChange={(e)=>{
-                setScheduleValue(parseInt(e.target.value))
             }} />
-            <select onChange={(e)=>{
-                setScheduleUnit(e.target.value)
-            }}>
-                <option defaultChecked value={"minutes"} >Minutes</option>
-                <option value={"hours"}>Hours</option>
-                <option value={"days"}>Days</option>
+            <input type="number" placeholder="Enter Tweet Limit" onChange={(e) => {
+                setTweetLimit(e.target.value)
+            }} />
 
-            </select>
-            <br />
+            <div >
+                <h2>Start Scraper Job</h2>
+                <button onClick={runScraper}>Run Scraper Job</button>
+            </div>
+            <div >
+                <h2>Schedule Scraper Job</h2>
+                <p>A schedule that runs at a regular rate, such as every 10 minutes.</p>
+                <input type='number' placeholder="X" onChange={(e) => {
+                    setScheduleValue(parseInt(e.target.value))
+                }} />
+                <select onChange={(e) => {
+                    setScheduleUnit(e.target.value)
+                }}>
+                    <option defaultChecked value={"minutes"} >Minutes</option>
+                    <option value={"hours"}>Hours</option>
+                    <option value={"days"}>Days</option>
 
-            <button onClick={scheduleScraper}>Schedule Scraper</button>
+                </select>
+                <button onClick={scheduleScraper}>Schedule Scraper</button>
+            </div>
+            {/* 
+
+             */}
         </>
     )
 }
