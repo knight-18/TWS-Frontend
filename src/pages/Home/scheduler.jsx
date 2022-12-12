@@ -6,6 +6,7 @@ export default function Scheduler() {
     const [scheduleUnit, setScheduleUnit] = useState("minutes")
     const [searchText, setSearchText] = useState("")
     const [tweetLimit, setTweetLimit] = useState(10)
+    const [jobSubmitted, setJobSubmitted] = useState(false)
     const runScraper = async () => {
         try {
             console.log("Run Scraper Called")
@@ -18,6 +19,7 @@ export default function Scheduler() {
                 body: postData
             }).then((res) => {
                 console.log("Response: ", res)
+                setJobSubmitted(true)
             }).catch((error) => {
                 console.log("Error in making API Call to runScraper", error)
             })
@@ -40,6 +42,8 @@ export default function Scheduler() {
                 body: postData
             }).then((res) => {
                 console.log("Response: ", res)
+                setJobSubmitted(true)
+
             }).catch((error) => {
                 console.log("Error in making API Call to runScraper", error)
             })
@@ -56,7 +60,9 @@ export default function Scheduler() {
             <input type="number" placeholder="Enter Tweet Limit" onChange={(e) => {
                 setTweetLimit(e.target.value)
             }} />
-
+            {jobSubmitted && <div style={{ color: "green" }}>
+                <p>Job Submitted Successfully</p>
+            </div>}
             <div >
                 <h2>Start Scraper Job</h2>
                 <button onClick={runScraper}>Run Scraper Job</button>
@@ -77,9 +83,6 @@ export default function Scheduler() {
                 </select>
                 <button onClick={scheduleScraper}>Schedule Scraper</button>
             </div>
-            {/* 
-
-             */}
         </>
     )
 }

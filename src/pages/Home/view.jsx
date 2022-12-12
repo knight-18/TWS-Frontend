@@ -6,7 +6,7 @@ export default function View (){
         <div style={{"textAlign": "center"}}>
             <h1>Twitter Web Scraper Scheduler</h1>
             <Scheduler />
-            <Jobs />
+            {/* <Jobs /> */}
             <Logout />
         </div>
     )
