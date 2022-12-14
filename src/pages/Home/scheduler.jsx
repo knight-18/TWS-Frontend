@@ -7,9 +7,11 @@ export default function Scheduler() {
     const [searchText, setSearchText] = useState("")
     const [tweetLimit, setTweetLimit] = useState(10)
     const [jobSubmitted, setJobSubmitted] = useState(false)
+    const [loader, setLoader] = useState(false)
     const runScraper = async () => {
         try {
             console.log("Run Scraper Called")
+            setLoader(true)
             let postData = {
                 searchText: searchText,
                 tweetLimit: tweetLimit
@@ -23,12 +25,15 @@ export default function Scheduler() {
             }).catch((error) => {
                 console.log("Error in making API Call to runScraper", error)
             })
+            setLoader(false)
         } catch (error) {
             console.log("Error in making API Call to runScraper", error)
+            setLoader(false)
         }
     }
     const scheduleScraper = async () => {
         try {
+            setLoader(true)
             console.log("Schedule Scraper Called")
             let postData = {
                 searchText: searchText,
@@ -43,9 +48,12 @@ export default function Scheduler() {
             }).then((res) => {
                 console.log("Response: ", res)
                 setJobSubmitted(true)
+                setLoader(false)
 
             }).catch((error) => {
                 console.log("Error in making API Call to runScraper", error)
+                setLoader(false)
+
             })
         } catch (error) {
             console.log("Error in making API Call to scheduleScraper", error)
@@ -60,6 +68,8 @@ export default function Scheduler() {
             <input type="number" placeholder="Enter Tweet Limit" onChange={(e) => {
                 setTweetLimit(e.target.value)
             }} />
+            {loader && <div>
+                <p>Please Wait...</p></div>}
             {jobSubmitted && <div style={{ color: "green" }}>
                 <p>Job Submitted Successfully</p>
             </div>}
